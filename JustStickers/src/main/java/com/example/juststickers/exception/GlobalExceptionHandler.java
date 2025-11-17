@@ -19,6 +19,6 @@ public class GlobalExceptionHandler {
 				webRequest.getDescription(false),HttpStatus.INTERNAL_SERVER_ERROR,
 				exception.getLocalizedMessage(),LocalDateTime.now()
 				);
-		return new ResponseEntity<>(errorResponseDto,HttpStatus.INTERNAL_SERVER_ERROR);			
+		return new ResponseEntity<>(errorResponseDto,HttpStatus.INTERNAL_SERVER_ERROR);			  
 	}
 }

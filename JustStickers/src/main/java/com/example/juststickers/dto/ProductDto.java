@@ -10,10 +10,10 @@ import lombok.Setter;
 @Setter
 public class ProductDto {
 	
-	   private Long productId;
+	   private Long productId;  
 	    private String name;
 	    private String description;
-	    private BigDecimal price;
+	    private BigDecimal price;  
 	    private Integer popularity;
 	    private String imageUrl;
 	    private Instant createdAt;

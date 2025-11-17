@@ -9,5 +9,5 @@ public class JustStickersApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(JustStickersApplication.class, args);
 	}
-
+  
 }

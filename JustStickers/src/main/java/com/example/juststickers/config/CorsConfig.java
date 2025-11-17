@@ -17,7 +17,7 @@ public class CorsConfig  {
 	        CorsConfiguration config = new CorsConfiguration();
 	        config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
 	        config.setAllowedMethods(Collections.singletonList("*"));
-	        config.setAllowedHeaders(Arrays.asList("Content-Type"));
+	        config.setAllowedHeaders(Arrays.asList("Content-Type"));  
 	        config.setAllowCredentials(true);
 
 	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
