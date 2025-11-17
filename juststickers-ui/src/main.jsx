@@ -11,14 +11,16 @@ import {
 import Home from "./components/Home.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
 import About from "./components/About.jsx";
-debugger;
+import React from "react";
+import { productsLoader } from "./components/Home.jsx";
 const routeDefinitions = createRoutesFromElements(
   <Route path="/" element={<App />} errorElement={<ErrorPage />}>
-    <Route index element={<Home />} />
-    <Route path="/home" element={<Home />} />
-    <Route path="/about" element={<About />} />
+    <Route index element={<Home />} loader={productsLoader} />
+    <Route path="home" element={<Home />} loader={productsLoader} />
+    <Route path="about" element={<About />} />
   </Route>
 );
+
 const appRouter = createBrowserRouter(routeDefinitions);
 
 createRoot(document.getElementById("root")).render(

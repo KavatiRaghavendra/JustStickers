@@ -3,7 +3,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 export default function Footer() {
   return (
-    <footer className=" flex justify-center items-center py-4 font-primary text-gray-700 dark:text-gray-300 dark:bg-darkbg">
+    <footer className=" bg-normalbg flex justify-center items-center py-4 font-primary text-gray-700 dark:text-gray-300 dark:bg-darkbg">
       Built with
       <FontAwesomeIcon
         icon={faHeart}

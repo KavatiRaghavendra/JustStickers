@@ -15,9 +15,9 @@ export default function ErrorPage() {
     errorMessage = routeError.data;
   }
   return (
-    <div className="flex flex-col min-h-[980px]">
-      <Header />
+    <div className="flex flex-col ">
       {/* Main Content */}
+      <Header />
       <main className="flex-grow">
         <div className="py-12 bg-normalbg dark:bg-darkbg font-primary">
           <div className="max-w-4xl mx-auto px-4">
