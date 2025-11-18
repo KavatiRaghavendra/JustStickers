@@ -75,12 +75,12 @@ export default function Header() {
           </li>
           <li>
             <NavLink
-              to="/error"
+              to="/Contact"
               className={({ isActive }) =>
                 isActive ? `underline ${navLinkClass}` : navLinkClass
               }
             >
-              Error
+              Contact
             </NavLink>
           </li>
         </ul>
