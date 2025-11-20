@@ -13,13 +13,14 @@ import ErrorPage from "./components/ErrorPage.jsx";
 import About from "./components/About.jsx";
 import React from "react";
 import { productsLoader } from "./components/Home.jsx";
-import { Contact } from "./components/Contact.jsx";
+import Contact from "./components/Contact.jsx";
+import { contactAction } from "./components/Contact.jsx";
 const routeDefinitions = createRoutesFromElements(
   <Route path="/" element={<App />} errorElement={<ErrorPage />}>
     <Route index element={<Home />} loader={productsLoader} />
     <Route path="home" element={<Home />} loader={productsLoader} />
     <Route path="about" element={<About />} />
-    <Route path="contact" element={<Contact />} />
+    <Route path="contact" element={<Contact />} action={contactAction} />
   </Route>
 );
 

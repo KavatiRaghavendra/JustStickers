@@ -1,11 +1,10 @@
-import java.util.List;
-
+package com.example.juststickers.service;
 import org.springframework.stereotype.Service;
 
-import com.example.juststickers.dto.ContactDto;
+import com.example.juststickers.dto.ContactRequestDto;
 @Service
 public interface IContactService {
-	
-	List<ContactDto> getProducts();
 
+
+	 boolean saveContact(ContactRequestDto contactRequestDto);
 }
