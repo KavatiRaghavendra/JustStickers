@@ -83,6 +83,26 @@ export default function Header() {
               Contact
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/login"
+              className={({ isActive }) =>
+                isActive ? `underline ${navLinkClass}` : navLinkClass
+              }
+            >
+              Login
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/cart"
+              className={({ isActive }) =>
+                isActive ? `underline ${navLinkClass}` : navLinkClass
+              }
+            >
+              <FontAwesomeIcon icon={faShoppingBasket} className="h-6 w-6" />
+            </NavLink>
+          </li>
         </ul>
       </div>
     </header>

@@ -13,6 +13,7 @@ export default function Contact() {
   const submit = useSubmit();
   const isSubmitting = navigation.state === "submitting";
   useEffect(() => {
+    debugger;
     if (actionData?.success) {
       formRef.current?.reset();
       toast.success("Your message has been submitted successfully!");
@@ -44,7 +45,6 @@ export default function Contact() {
         suggestions, please don’t hesitate to reach out.
       </p>
 
-      {/* Contact Form */}
       <Form
         method="POST"
         ref={formRef}
@@ -71,46 +71,46 @@ export default function Contact() {
             </p>
           )}
         </div>
-
-        <div>
-          <label htmlFor="email" className={labelStyle}>
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Your Email"
-            className={textFieldStyle}
-            required
-          />
-          {actionData?.errors?.email && (
-            <p className="text-red-500 text-sm mt-1">
-              {actionData.errors.email}
-            </p>
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="email" className={labelStyle}>
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Your Email"
+              className={textFieldStyle}
+              required
+            />
+            {actionData?.errors?.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {actionData.errors.email}
+              </p>
+            )}
+          </div>
+          <div>
+            <label htmlFor="mobileNumber" className={labelStyle}>
+              Mobile Number
+            </label>
+            <input
+              id="mobileNumber"
+              name="mobileNumber"
+              type="tel"
+              required
+              pattern="^\d{10}$"
+              title="Mobile number must be exactly 10 digits"
+              placeholder="Your Mobile Number"
+              className={textFieldStyle}
+            />
+            {actionData?.errors?.mobileNumber && (
+              <p className="text-red-500 text-sm mt-1">
+                {actionData.errors.mobileNumber}
+              </p>
+            )}
+          </div>
         </div>
-        <div>
-          <label htmlFor="mobileNumber" className={labelStyle}>
-            Mobile Number
-          </label>
-          <input
-            id="mobileNumber"
-            name="mobileNumber"
-            type="tel"
-            required
-            pattern="^\d{10}$"
-            title="Mobile number must be exactly 10 digits"
-            placeholder="Your Mobile Number"
-            className={textFieldStyle}
-          />
-          {actionData?.errors?.mobileNumber && (
-            <p className="text-red-500 text-sm mt-1">
-              {actionData.errors.mobileNumber}
-            </p>
-          )}
-        </div>
-
         <div>
           <label htmlFor="message" className={labelStyle}>
             Message
