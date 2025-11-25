@@ -1,46 +1,81 @@
 import React from "react";
 import { useNavigation } from "react-router-dom";
+import PageTitle from "./PageTitle";
+import { Form, Link } from "react-router-dom";
+
 export default function Login() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
+
+  const labelStyle =
+    "block text-lg font-semibold text-primary dark:text-light mb-2";
+  const textFieldStyle =
+    "w-full px-4 py-2 text-base border rounded-md transition border-primary dark:border-light focus:ring focus:ring-dark dark:focus:ring-lighter focus:outline-none text-gray-800 dark:text-lighter bg-white dark:bg-gray-600 placeholder-gray-400 dark:placeholder-gray-300";
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h2 className="text-2xl font-bold mb-6">Login</h2>
-      <form className="bg-white p-6 rounded shadow-md w-full max-w-sm">
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2" htmlFor="email">
-            UserName
-          </label>
-          <input
-            className="w-full px-3 py-2 border rounded"
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Enter your username"
-            required
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 mb-2" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="w-full px-3 py-2 border rounded"
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        <button
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
-          type="submit"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Logging in..." : "Login"}
-        </button>
-      </form>
+    <div className="min-h-[500px] flex items-center justify-center font-primary bg-normalbg dark:bg-darkbg">
+      <div className="bg-normalbg dark:bg-gray-700 shadow-md rounded-lg max-w-md w-full px-8 py-6">
+        {/* Title */}
+        <PageTitle title="Login" />
+        {/* Form */}
+        <Form method="POST" className="space-y-6">
+          {/* Email Field */}
+          <div>
+            <label htmlFor="username" className={labelStyle}>
+              Username
+            </label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              placeholder="Your Username"
+              autoComplete="username"
+              required
+              className={textFieldStyle}
+            />
+          </div>
+
+          {/* Password Field */}
+          <div>
+            <label htmlFor="password" className={labelStyle}>
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Your Password"
+              autoComplete="current-password"
+              required
+              minLength={4}
+              maxLength={20}
+              className={textFieldStyle}
+            />
+          </div>
+
+          {/* Submit Button */}
+          <div>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full px-6 py-2 text-white dark:text-black text-xl rounded-md transition duration-200 bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter"
+            >
+              {isSubmitting ? "Authenticating..." : "Login"}
+            </button>
+          </div>
+        </Form>
+
+        {/* Register Link */}
+        <p className="text-center text-gray-600 dark:text-gray-400 mt-4">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="text-primary dark:text-light hover:text-dark dark:hover:text-primary transition duration-200"
+          >
+            Register Here
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

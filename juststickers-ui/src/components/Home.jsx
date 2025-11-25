@@ -6,7 +6,7 @@ export default function Home() {
   const products = useLoaderData();
   return (
     <>
-      <div className=" bg-cover bg-center dark:bg-darkbg">
+      <div className=" bg-cover bg-center dark:bg-darkbg bg-normalbg">
         <div className=" mx-auto px-6 py-8 bg-cover bg-normalbg dark:text-gray-200 text-gray-800 dark:bg-darkbg">
           <PageHeading title="Explore Just Stickers!">
             Add a touch of creativity to your space with our wide range of fun

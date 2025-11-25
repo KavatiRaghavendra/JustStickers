@@ -7,15 +7,16 @@ import {
   faAngleDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
-
+import { useState, useEffect, useRef, use } from "react";
+import { useCart } from "../store/cart-context";
+import { useContext } from "react";
 const navLinkClass =
   "flex items-center gap-2 text-xl text-gray-800 dark:text-gray-200 font-semibold";
 export default function Header() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") === "dark" ? "dark" : "light";
   });
-
+  //const addtoCart = useContext(CartContext);
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -31,7 +32,7 @@ export default function Header() {
       return newTheme;
     });
   };
-
+  const { totalQuantity } = useCart();
   return (
     <header className="border-b border-gray-300 dark:border-gray-600 sticky top-0 z-20 bg-normalbg dark:bg-darkbg">
       <div className="flex items-center justify-between mx-auto max-w-[1152px] px-6 py-4">
@@ -94,14 +95,15 @@ export default function Header() {
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/cart"
-              className={({ isActive }) =>
-                isActive ? `underline ${navLinkClass}` : navLinkClass
-              }
-            >
-              <FontAwesomeIcon icon={faShoppingBasket} className="h-6 w-6" />
-            </NavLink>
+            <Link to="/cart" className=" relative text-primary py-2">
+              <FontAwesomeIcon
+                icon={faShoppingBasket}
+                className="text-primary dark:text-light w-6"
+              />
+              <div className="absolute -top-2 -right-6 text-xs bg-yellow-400 text-black font-semibold rounded-full px-2 py-1 leading-none">
+                {totalQuantity}
+              </div>
+            </Link>
           </li>
         </ul>
       </div>
