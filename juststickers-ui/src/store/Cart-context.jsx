@@ -52,7 +52,6 @@ const cartReducer = (prevCart, action) => {
 };
 
 export const CartProvider = ({ children }) => {
-  debugger;
   const initialCartState = (() => {
     try {
       const storedCart = localStorage.getItem("cart");
@@ -77,7 +76,6 @@ export const CartProvider = ({ children }) => {
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
-    debugger;
     try {
       localStorage.setItem("cart", JSON.stringify(cart));
     } catch (error) {

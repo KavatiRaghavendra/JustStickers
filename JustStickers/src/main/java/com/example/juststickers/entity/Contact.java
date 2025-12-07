@@ -8,10 +8,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-@Data
+
 @Entity
 @Table(name = "contacts")
-public class Contact {
+public class Contact extends BaseEntity {
 
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +32,4 @@ public class Contact {
 
      @Column(name = "status", length = 50)
     private String status = "Pending";
-
 }

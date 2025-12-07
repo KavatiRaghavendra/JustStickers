@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
@@ -58,17 +59,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
-    // @ExceptionHandler(ResourceNotFoundException.class)
-    // public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception,
-    //         WebRequest webRequest){
-    //     ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-    //             webRequest.getDescription(false),
-    //             HttpStatus.NOT_FOUND,
-    //             exception.getMessage(),
-    //             LocalDateTime.now()
-    //     );
-    //     return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
-    // }
+   
+    
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception,
+            WebRequest webRequest){
+        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
+    }
 
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public class ResourceNotFoundException extends RuntimeException {
 
+        public ResourceNotFoundException(String resourceName, String fieldName, String fieldValue) {
+            super(String.format("%s not found with the given input data %s : '%s'", resourceName, fieldName, fieldValue));
+        }
+
+}
 }

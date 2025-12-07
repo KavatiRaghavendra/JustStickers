@@ -20,7 +20,13 @@ import Login from "./components/Login.jsx";
 import ProductDetail from "./components/ProductDetail.jsx";
 import Register, { registerAction } from "./components/Register.jsx";
 import { CartProvider } from "./store/cart-context.jsx";
-
+import Profile, {
+  profileLoader,
+  profileAction,
+} from "./components/Profile.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import { loginAction } from "./components/Login.jsx";
+import { AuthProvider } from "./store/auth-context.jsx";
 import "react-toastify/dist/ReactToastify.css";
 import { use, useContext } from "react";
 import Cart from "./components/cart.jsx";
@@ -30,10 +36,21 @@ const routeDefinitions = createRoutesFromElements(
     <Route path="home" element={<Home />} loader={productsLoader} />
     <Route path="about" element={<About />} />
     <Route path="contact" element={<Contact />} action={contactAction} />
-    <Route path="login" element={<Login />} />
+    <Route path="login" element={<Login />} action={loginAction} />
     <Route path="/products/:productId" element={<ProductDetail />} />
     <Route path="register" element={<Register />} action={registerAction} />
     <Route path="cart" element={<Cart />} />
+    <Route element={<ProtectedRoute />}>
+      <Route
+        path="/profile"
+        element={<Profile />}
+        loader={profileLoader}
+        action={profileAction}
+        shouldRevalidate={({ actionResult }) => {
+          return !actionResult?.success;
+        }}
+      />
+    </Route>
   </Route>
 );
 
@@ -48,9 +65,11 @@ const initialCartcontaxt = {
 };
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <CartProvider>
-      <RouterProvider router={appRouter} />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <RouterProvider router={appRouter} />
+      </CartProvider>
+    </AuthProvider>
     <ToastContainer
       position="top-center"
       autoClose={5000}

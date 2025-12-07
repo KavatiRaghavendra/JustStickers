@@ -1,24 +1,43 @@
-import React from "react";
+import React, { use } from "react";
 import PageTitle from "./PageTitle";
 import { Form } from "react-router-dom";
 import apiClient from "../api/apiClient";
-import { useActionData, useNavigation, useSubmit } from "react-router-dom";
+import {
+  useActionData,
+  useNavigation,
+  useSubmit,
+  useNavigate,
+} from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
+import { useAuth } from "../store/auth-context";
 
 export default function Contact() {
   const actionData = useActionData();
   const formRef = useRef(null);
   const navigation = useNavigation();
+  const Navigate = useNavigate();
   const submit = useSubmit();
+  const Auth = useAuth();
+
+  useEffect(() => {}, [actionData]);
+
   const isSubmitting = navigation.state === "submitting";
   useEffect(() => {
-    debugger;
-    if (actionData?.success) {
-      formRef.current?.reset();
-      toast.success("Your message has been submitted successfully!");
+    if (Auth.isAuthenticated === false) {
+      toast.info("Please login to contact us. for better assistance.");
+    } else {
+      // Optionally, you can pre-fill the form with user info if available
+      const user = Auth.user;
+      if (user) {
+        if (formRef.current) {
+          formRef.current.name.value = user.name || "";
+          formRef.current.email.value = user.email || "";
+          formRef.current.mobileNumber.value = user.mobileNumber || "";
+        }
+      }
     }
-  }, [actionData]);
+  }, [Auth.isAuthenticated]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -61,7 +80,7 @@ export default function Contact() {
             type="text"
             placeholder="Your Name"
             className={textFieldStyle}
-            required
+            //required
             minLength={5}
             maxLength={30}
           />
@@ -82,7 +101,7 @@ export default function Contact() {
               type="email"
               placeholder="Your Email"
               className={textFieldStyle}
-              required
+              // required
             />
             {actionData?.errors?.email && (
               <p className="text-red-500 text-sm mt-1">
@@ -98,7 +117,7 @@ export default function Contact() {
               id="mobileNumber"
               name="mobileNumber"
               type="tel"
-              required
+              //required
               pattern="^\d{10}$"
               title="Mobile number must be exactly 10 digits"
               placeholder="Your Mobile Number"
@@ -121,7 +140,7 @@ export default function Contact() {
             rows="4"
             placeholder="Your Message"
             className={textFieldStyle}
-            required
+            // required
             minLength={5}
             maxLength={500}
           ></textarea>

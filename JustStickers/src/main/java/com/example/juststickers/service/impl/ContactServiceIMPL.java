@@ -4,6 +4,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.example.juststickers.Repo.ContactRepo;
+import com.example.juststickers.constants.ApplicationConstants;
 import com.example.juststickers.dto.ContactRequestDto;
 import com.example.juststickers.entity.Contact;
 import com.example.juststickers.service.IContactService;
@@ -26,7 +27,7 @@ public class ContactServiceIMPL implements IContactService {
      private Contact transformToEntity(ContactRequestDto contactRequestDto) {
         Contact contact = new Contact();
         BeanUtils.copyProperties(contactRequestDto, contact);
-        contact.setStatus("OPEN");
+        contact.setStatus(ApplicationConstants.OPEN_MESSAGE);
         return contact;
     }
     

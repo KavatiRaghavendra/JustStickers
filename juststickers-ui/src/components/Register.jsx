@@ -1,22 +1,32 @@
-import { Form, Link, useActionData, useNavigation } from "react-router-dom";
 import React, { useRef, useEffect } from "react";
+import {
+  Form,
+  Link,
+  useActionData,
+  useNavigation,
+  useNavigate,
+  useSubmit,
+} from "react-router-dom";
+import apiClient from "../api/apiClient";
 import { toast } from "react-toastify";
-import PageTitle from "./PageTitle.jsx";
-import apiClient from "../api/apiClient.js";
-import { useSubmit, useNavigate } from "react-router-dom";
+import PageTitle from "./PageTitle";
 
 export default function Register() {
   const actionData = useActionData();
   const navigation = useNavigation();
+  const navigate = useNavigate();
   const formRef = useRef(null);
   const submit = useSubmit();
+
   const isSubmitting = navigation.state === "submitting";
+
   useEffect(() => {
     if (actionData?.success) {
       navigate("/login");
       toast.success("Registration completed successfully. Try login..");
     }
   }, [actionData]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(formRef.current);
@@ -26,15 +36,20 @@ export default function Register() {
     submit(formData, { method: "post" });
   };
 
+  /**
+   * Validate Passwords Match
+   */
   const validatePasswords = (formData) => {
     const password = formData.get("password");
     const confirmPwd = formData.get("confirmPwd");
+
     if (password !== confirmPwd) {
       toast.error("Passwords do not match!");
       return false;
     }
     return true;
   };
+
   const labelStyle =
     "block text-lg font-semibold text-primary dark:text-light mb-2";
   const textFieldStyle =
@@ -44,6 +59,7 @@ export default function Register() {
     <div className="min-h-[752px] flex items-center justify-center font-primary dark:bg-darkbg">
       <div className="bg-white dark:bg-gray-700 shadow-md rounded-lg max-w-md w-full px-8 py-6">
         <PageTitle title="Register" />
+
         <Form
           method="POST"
           ref={formRef}
@@ -124,7 +140,7 @@ export default function Register() {
               placeholder="Your Password"
               required
               autoComplete="new-password"
-              minLength={1}
+              minLength={8}
               maxLength={20}
               className={textFieldStyle}
             />
@@ -146,7 +162,7 @@ export default function Register() {
               placeholder="Confirm Your Password"
               required
               autoComplete="confirm-password"
-              minLength={1}
+              minLength={8}
               maxLength={20}
               className={textFieldStyle}
             />
@@ -178,8 +194,7 @@ export default function Register() {
 }
 
 export async function registerAction({ request }) {
-  debugger;
-  const formData = await request.formData();
+  const data = await request.formData();
   const registerData = {
     name: data.get("name"),
     email: data.get("email"),
@@ -190,12 +205,14 @@ export async function registerAction({ request }) {
     const response = await apiClient.post("/auth/register", registerData);
     return { success: true };
   } catch (error) {
-    const errors = error.response?.data?.errors || {
-      general:
-        error.response?.data?.errorMessage ||
+    if (error.response?.status === 400) {
+      return { success: false, errors: error.response?.data };
+    }
+    throw new Response(
+      error.response?.data?.errorMessage ||
         error.message ||
-        "Registration failed. Please try again.",
-    };
-    return { errors };
+        "Failed to submit your message. Please try again.",
+      { status: error.status || 500 }
+    );
   }
 }

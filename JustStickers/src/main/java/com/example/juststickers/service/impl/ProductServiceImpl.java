@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.example.juststickers.Repo.ProductRepo;
@@ -18,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 public class ProductServiceImpl implements IProductService{
 
 	private final ProductRepo productRepo;
+	
+	@Cacheable("products")
 	@Override
 	public List<ProductDto> getProducts() {
 		return productRepo.findAll().stream().map(this::transformToDTO).collect(Collectors.toList());
