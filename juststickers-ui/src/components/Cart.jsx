@@ -1,20 +1,40 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useMemo } from "react";
 import PageTitle from "./PageTitle";
-import CartTable from "./CartTable";
+import { Link } from "react-router-dom";
 import emptyCartImage from "../assets/emptycart.png";
-import { useCart } from "../store/cart-context";
+import { useSelector } from "react-redux";
+import { selectCartItems } from "../store/cart-slice";
+import CartTable from "./CartTable";
+import { useAuth } from "../store/auth-context";
 export default function Cart() {
-  const { cart } = useCart();
-  const isCartEmpty = cart.length === 0;
+  const cart = useSelector(selectCartItems);
+  const { user, isAuthenticated } = useAuth();
+
+  const isAddressIncomplete = useMemo(() => {
+    if (!isAuthenticated) return false;
+    if (!user.address) return true;
+    const { street, city, state, postalCode, country } = user.address;
+    return !street || !city || !state || !postalCode || !country;
+  }, [user]);
+
+  // Memoize the cart length check to prevent re-renders
+  const isCartEmpty = useMemo(() => cart.length === 0, [cart.length]);
+
   return (
     <div className="min-h-[852px] py-12 bg-normalbg dark:bg-darkbg font-primary">
       <div className="max-w-4xl mx-auto px-4">
         <PageTitle title="Your Cart" />
         {!isCartEmpty ? (
           <>
+            {isAddressIncomplete && (
+              <p className="text-red-500 text-lg mt-2 text-center">
+                Please update your address in your profile to proceed to
+                checkout.
+              </p>
+            )}
             <CartTable />
             <div className="flex justify-between mt-8 space-x-4">
+              {/* Back to Products Button */}
               <Link
                 to="/home"
                 className="py-2 px-4 bg-primary dark:bg-light text-white dark:text-black text-xl font-semibold rounded-sm flex justify-center items-center hover:bg-dark dark:hover:bg-lighter transition"
@@ -23,8 +43,18 @@ export default function Cart() {
               </Link>
               {/* Proceed to Checkout Button */}
               <Link
-                to="/checkout"
-                className="py-2 px-4 bg-primary dark:bg-light text-white dark:text-black text-xl font-semibold rounded-sm flex justify-center items-center hover:bg-dark dark:hover:bg-lighter transition"
+                to={isAddressIncomplete ? "#" : "/checkout"}
+                className={`py-2 px-4 text-xl font-semibold rounded-sm flex justify-center items-center transition
+                                    ${
+                                      isAddressIncomplete
+                                        ? "bg-gray-400 cursor-not-allowed"
+                                        : "bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter"
+                                    } text-white dark:text-black`}
+                onClick={(e) => {
+                  if (isAddressIncomplete) {
+                    e.preventDefault();
+                  }
+                }}
               >
                 Proceed to Checkout
               </Link>

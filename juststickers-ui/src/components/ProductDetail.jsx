@@ -8,8 +8,9 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef } from "react";
-import { useCart } from "../store/cart-context";
-
+//import { useCart } from "../store/cart-context";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/cart-slice";
 export default function ProductDetail() {
   debugger;
   const location = useLocation();
@@ -19,12 +20,10 @@ export default function ProductDetail() {
   const zoomRef = useRef(null);
   const [isHovering, setIsHovering] = useState(false);
   const [backgroundPosition, setBackgroundPosition] = useState("center");
-  const { addToCart } = useCart();
-  debugger;
+  const dispatch = useDispatch();
   const handleAddToCart = () => {
-    debugger;
     if (quantity < 1) return;
-    addToCart(product, quantity);
+    dispatch(addToCart({ product, quantity }));
   };
 
   const handleMouseMove = (e) => {

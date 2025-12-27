@@ -54,7 +54,6 @@ export const AuthProvider = ({ children }) => {
 
   const [authState, dispatch] = useReducer(authReducer, initialAuthState);
 
-  // Save cart to localStorage whenever it changes
   useEffect(() => {
     try {
       if (authState.isAuthenticated) {

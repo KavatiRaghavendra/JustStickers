@@ -8,25 +8,28 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useCart } from "../store/cart-context";
+//import { useCart } from "../store/cart-context";
+//import { useCart } from "../store/cart-context";
+import { useDispatch } from "react-redux";
 import { useAuth } from "../store/auth-context";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { selectTotalQuantity } from "../store/cart-slice.js";
+import Cart from "./cart.jsx";
 
 export default function Header() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") === "dark" ? "dark" : "light";
   });
-
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [isAdminMenuOpen, setAdminMenuOpen] = useState(false);
   const location = useLocation();
   const userMenuRef = useRef();
   const navigate = useNavigate();
-
+  const totalQuantity = useSelector(selectTotalQuantity);
+  const dispatch = useDispatch();
   const toggleAdminMenu = () => setAdminMenuOpen((prev) => !prev);
   const toggleUserMenu = () => setUserMenuOpen((prev) => !prev);
-
-  const { totalQuantity } = useCart();
   const { isAuthenticated, user, logout } = useAuth();
   const isAdmin = user?.roles?.includes("ROLE_ADMIN");
   useEffect(() => {
@@ -125,9 +128,7 @@ export default function Header() {
                   >
                     <span className={navLinkClass}>
                       {`Hello ${
-                        user.name.length > 5
-                          ? `${user.name.slice(0, 5)}...`
-                          : user.name
+                        user.name.length > 5 ? `${user.name}` : user.name
                       }`}
                     </span>
                     <FontAwesomeIcon

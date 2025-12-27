@@ -19,7 +19,8 @@ import { contactAction } from "./components/Contact.jsx";
 import Login from "./components/Login.jsx";
 import ProductDetail from "./components/ProductDetail.jsx";
 import Register, { registerAction } from "./components/Register.jsx";
-import { CartProvider } from "./store/cart-context.jsx";
+//import { CartProvider } from "./store/cart-context.jsx";
+
 import Profile, {
   profileLoader,
   profileAction,
@@ -30,17 +31,36 @@ import { AuthProvider } from "./store/auth-context.jsx";
 import "react-toastify/dist/ReactToastify.css";
 import { use, useContext } from "react";
 import Cart from "./components/cart.jsx";
+import { contactLoader } from "./components/Contact.jsx";
+import CheckoutForm from "./components/CheckoutForm.jsx";
+import { checkoutAction } from "./components/CheckoutForm.jsx";
+import OrderSuccess from "./components/OrderSuccess.jsx";
+import { checkoutprofileLoader } from "./components/CheckoutForm.jsx";
+import Orders, { ordersLoader } from "./components/Orders.jsx";
+import { Provider } from "react-redux";
+import Messages, { messagesLoader } from "./components/admin/Messages.jsx";
+import AdminOrders, {
+  adminOrdersLoader,
+} from "./components/admin/AdminOrders.jsx";
+import store from "./store/store.js";
 const routeDefinitions = createRoutesFromElements(
   <Route path="/" element={<App />} errorElement={<ErrorPage />}>
     <Route index element={<Home />} loader={productsLoader} />
     <Route path="home" element={<Home />} loader={productsLoader} />
     <Route path="about" element={<About />} />
-    <Route path="contact" element={<Contact />} action={contactAction} />
+    <Route
+      path="contact"
+      element={<Contact />}
+      action={contactAction}
+      loader={contactLoader}
+    />
     <Route path="login" element={<Login />} action={loginAction} />
     <Route path="/products/:productId" element={<ProductDetail />} />
     <Route path="register" element={<Register />} action={registerAction} />
     <Route path="cart" element={<Cart />} />
+
     <Route element={<ProtectedRoute />}>
+      <Route path="OrderSuccess" element={<OrderSuccess />} />
       <Route
         path="/profile"
         element={<Profile />}
@@ -50,25 +70,37 @@ const routeDefinitions = createRoutesFromElements(
           return !actionResult?.success;
         }}
       />
+      <Route path="/orders" element={<Orders />} loader={ordersLoader} />
+      <Route
+        path="/checkout"
+        element={<CheckoutForm />}
+        action={checkoutAction}
+        loader={checkoutprofileLoader}
+      />
+      <Route
+        path="/admin/orders"
+        element={<AdminOrders />}
+        loader={adminOrdersLoader}
+      />
+      <Route
+        path="/admin/messages"
+        element={<Messages />}
+        loader={messagesLoader}
+      />
     </Route>
   </Route>
 );
 
 const appRouter = createBrowserRouter(routeDefinitions);
-const initialCartcontaxt = {
-  addtoCart: () => {
-    console.log("addtoCart called");
-  },
-  removeFromCart: () => {},
-  clearCart: () => {},
-  totalQuantity: 0,
-};
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <CartProvider>
+      {/* //  <CartProvider> */}
+      <Provider store={store}>
         <RouterProvider router={appRouter} />
-      </CartProvider>
+      </Provider>
+      {/* </CartProvider> */}
     </AuthProvider>
     <ToastContainer
       position="top-center"

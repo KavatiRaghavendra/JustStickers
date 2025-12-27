@@ -85,12 +85,12 @@ public class AuthController {
 	    @PostMapping("/register")
 	    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
 
-	        CompromisedPasswordDecision decision = compromisedPasswordChecker.check(registerRequestDto.getPassword());
+	      /* CompromisedPasswordDecision decision = compromisedPasswordChecker.check(registerRequestDto.getPassword());
 	        if(decision.isCompromised()) {
 	            return ResponseEntity
 	                    .status(HttpStatus.BAD_REQUEST)
 	                    .body(Map.of("password", "Choose a strong password"));
-	        }
+	        } */
 	        Optional<Customer> existingCustomer =  customerRepository.findByEmailOrMobileNumber
 	                (registerRequestDto.getEmail(),registerRequestDto.getMobileNumber());
 	        if(existingCustomer.isPresent()) {

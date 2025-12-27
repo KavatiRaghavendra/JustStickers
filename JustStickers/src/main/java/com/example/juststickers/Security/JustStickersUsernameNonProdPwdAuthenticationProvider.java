@@ -20,11 +20,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-
-@Profile("prod")
+@Profile("dev")
 @Component
 @RequiredArgsConstructor
-public class JustStickersUsernamePwdAuthenticationProvider implements AuthenticationProvider {
+public class JustStickersUsernameNonProdPwdAuthenticationProvider implements AuthenticationProvider {
 
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
@@ -41,12 +40,8 @@ public class JustStickersUsernamePwdAuthenticationProvider implements Authentica
         List<SimpleGrantedAuthority> authorities = roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .toList();
-        if(passwordEncoder.matches(pwd, customer.getPasswordHash())) {
             return new UsernamePasswordAuthenticationToken(customer,null,
                     authorities);
-        } else {
-            throw new BadCredentialsException("Invalid password!");
-        }
     }
 
     @Override

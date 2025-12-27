@@ -42,7 +42,7 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
     	        return;
     	    }
         String authHeader = request.getHeader(ApplicationConstants.JWT_HEADER);
-        if (null != authHeader || !authHeader.startsWith("Bearer ")) {
+        if (null != authHeader) {
             try {
                 // Extract the JWT token
                 String jwt = authHeader.substring(7); // Remove 'Bearer ' prefix
