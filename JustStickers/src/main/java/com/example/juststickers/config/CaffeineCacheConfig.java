@@ -13,15 +13,18 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class CaffeineCacheConfig {
 
-    @Bean
+    @SuppressWarnings("null")
+	@Bean
     public CacheManager caffeineCacheManager() {
-        CaffeineCache productsCache = new CaffeineCache("products",
+        @SuppressWarnings("null")
+		CaffeineCache productsCache = new CaffeineCache("products",
                 Caffeine.newBuilder()
                         .expireAfterWrite(30, TimeUnit.MINUTES)
                         .maximumSize(1000)
                         .build());
 
-        CaffeineCache rolesCache = new CaffeineCache("roles",
+        @SuppressWarnings("null")
+		CaffeineCache rolesCache = new CaffeineCache("roles",
                 Caffeine.newBuilder()
                         .expireAfterWrite(1, TimeUnit.DAYS)
                         .maximumSize(1)
